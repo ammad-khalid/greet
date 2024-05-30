@@ -24,7 +24,7 @@ def store_user(user: Dict[Text, Any]) -> None:
     red.set("user", json.dumps(user))
 
 
-@app.route('/greet', methods=["GET"])
+@app.route('/', methods=["GET"])
 def greet():
     """greet the user."""
     print("greet")
@@ -35,7 +35,7 @@ def greet():
      return "Hello, unknown stranger!"
 
 
-@app.route('/save_name', methods=["POST"])
+@app.route('/', methods=["POST"])
 def save_name():
     """Change a users details"""
 
@@ -43,11 +43,6 @@ def save_name():
     store_user(user)
     return "I'll try to remember your name, {}!".format(user.get("name"))
 
-@app.route('/check', methods=["GET"])
-def check():
-    """Check if the user is known."""
-    return "Server is running"
 
-
-if __name__ == '_main_':
+if __name__ == '__main__':
    app.run(host='0.0.0.0', port=8080)

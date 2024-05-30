@@ -1,0 +1,43 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: greet-pod
+  labels:
+    app: {{ .Values.metadata.labels.app }}
+spec:
+  replicas: 1
+  selector:
+     matchLabels:
+       app: {{ .Values.selector.matchLabels.app }}
+  strategy:
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.metadata.labels.app }}
+
+    spec:
+      containers:
+      - image: {{ .Values.image.repository }}:{{ .Values.image.tag }}
+        name: greet
+
+        ports:
+        - containerPort: 8080
+          name: podport
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: app-svc
+  labels:
+    app: app-svc
+spec:
+  type: LoadBalancer
+  selector:
+    app: {{ .Values.spec.selector.app }}
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: podport
+    name: port

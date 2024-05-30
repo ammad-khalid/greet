@@ -1,0 +1,13 @@
+metadata:
+  labels:
+    app: greetapp
+spec:
+  selector:
+   app: greetapp
+selector:
+  matchLabels:
+    app: greetapp
+
+image:
+  repository: 779160054397.dkr.ecr.us-west-2.amazonaws.com/greet
+  tag: latest
