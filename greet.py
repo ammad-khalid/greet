@@ -9,33 +9,33 @@ app = Flask(__name__)
 def get_current_user() -> Optional[Dict[Text, Any]]:
     """Extract current user details from storage."""
 
-    red = redis.StrictRedis(host="localhost", port=6379, db=1)
+    red = redis.StrictRedis(host="localhost", port=7777, db=1)
     encoded_user = red.get("user")
     if encoded_user:
-        return json.loads(encoded_user)
+      return json.loads(encoded_user)
     else:
-        return None
+       return None
 
 
 def store_user(user: Dict[Text, Any]) -> None:
     """Save user details to our storage."""
 
-    red = redis.StrictRedis(host="localhost", port=6379, db=1)
+    red = redis.StrictRedis(host="localhost", port=7777, db=1)
     red.set("user", json.dumps(user))
 
 
-@app.route('/', methods=["GET"])
+@app.route('/greet', methods=["GET"])
 def greet():
     """greet the user."""
-
+    print("greet")
     user = get_current_user()
     if user is not None:
-        return "Hello, {}!".format(user.get("name"))
+     return "Hello, {}!".format(user.get("name"))
     else:
-        return "Hello, unknown stranger!"
+     return "Hello, unknown stranger!"
 
 
-@app.route('/', methods=["POST"])
+@app.route('/save_name', methods=["POST"])
 def save_name():
     """Change a users details"""
 
@@ -43,5 +43,11 @@ def save_name():
     store_user(user)
     return "I'll try to remember your name, {}!".format(user.get("name"))
 
+@app.route('/check', methods=["GET"])
+def check():
+    """Check if the user is known."""
+    return "Server is running"
 
-app.run(port=8080)
+
+if __name__ == '_main_':
+   app.run(host='0.0.0.0', port=8080)
